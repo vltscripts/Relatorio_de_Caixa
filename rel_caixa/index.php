@@ -218,7 +218,7 @@ if (isset($_SESSION['MM_Usuario'])) {
             $saldo = $tot_entrada - $tot_saida;
             ?>
 
-            <div class="total-section" style="font-size: 15px;">
+            <div class="total-section" style="font-size: 20px;">
                 <div class="total" style="color: blue;">Total Entradas: R$ <?php echo number_format($tot_entrada, 2, ',', '.'); ?></div>
                 <div class="total" style="color: red;">Total Saídas: R$ <?php echo number_format($tot_saida, 2, ',', '.'); ?></div>
                 <div class="total" style="color: green;">Saldo: R$ <?php echo number_format($saldo, 2, ',', '.'); ?></div>
