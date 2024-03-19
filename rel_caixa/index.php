@@ -275,7 +275,6 @@ if (isset($_SESSION['MM_Usuario'])) {
                                 ?>
                             </td>
 
-
                                 <!--Exibe Login -->
                                 <td style="color: red; font-weight: bold;"><?php echo $login; ?></td> <!-- Login -->
 
@@ -285,13 +284,23 @@ if (isset($_SESSION['MM_Usuario'])) {
                                 <!--Exibe Usuario -->
                                 <td style="font-weight: bold;"><?php echo $row['usuario']; ?></td> <!-- Usuario -->
 
-                                <!--Exibe Historico-->
-                                <td style="solid #ddd; font-weight: bold; color:#02824b; position: relative; padding-left: 25px;"> <!-- Adicionando padding à esquerda para o texto -->
-                                    <?php                         
-                                    $highlighted_historico = str_replace('nome_cliente', '<span class="highlight">nome_cliente</span>', $row['historico']);
-                                    echo '<img src="img/historico.png" alt="Ícone Destaque" style="width: 20px; height: 20px; position: absolute; left: 0; top: 50%; transform: translateY(-50%);">';
-                                    echo $highlighted_historico;
-                                    ?>
+                                <!-- Exibe Historico -->
+                                <td style="position: relative; cursor: pointer;">
+                                <?php
+                                $max_length = 45; // Defina o comprimento máximo desejado
+                                $historico = $row['historico'];
+                                // Limita o tamanho do histórico e adiciona "..." se for muito longo
+                                $historico_abreviado = strlen($historico) > $max_length ? substr($historico, 0, $max_length) . '...' : $historico;
+
+                                // Destaque "nome_cliente" no histórico
+                                $highlighted_historico = str_replace('nome_cliente', '<span class="highlight">nome_cliente</span>', $historico_abreviado);
+                                ?>
+                                <span style="color: #02824b; font-weight: bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 200px;" title="<?php echo htmlspecialchars($historico); ?>">
+                                <?php echo $highlighted_historico; ?>
+                                </span>
+                                <?php if (strlen($historico) > $max_length): ?>
+                                <span style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);">...</span>
+                                <?php endif; ?>
                                 </td>
 
                                 <!--Exibe Entrada -->
