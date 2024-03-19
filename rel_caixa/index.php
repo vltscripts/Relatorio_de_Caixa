@@ -205,21 +205,35 @@ if (isset($_SESSION['MM_Usuario'])) {
             // Execute a consulta
             $result = mysqli_query($link, $query);
 
-            // Calcular totais
+            // Calcular o total de entradas e o número total de boletos
             $tot_entrada = 0;
+            $total_boletos_ = 0; // Inicializando a contagem
             $tot_saida = 0;
+
+            // Loop através dos resultados e somar as entradas e saídas
             while ($row = mysqli_fetch_assoc($result)) {
-                $tot_entrada += $row['entrada'];
-                $tot_saida += $row['saida'];
+            $tot_entrada += $row['entrada'];
+            $tot_saida += $row['saida'];
+    
+            // Verificar se a entrada é um boleto
+            if ($row['entrada'] > 0) {
+            $total_boletos_++; // Incrementar a contagem de boletos apenas para entradas
             }
+            }
+
+            // Calcular o saldo como antes
             $saldo = $tot_entrada - $tot_saida;
+
             ?>
 
             <div class="total-section" style="font-size: 20px;">
+			    <div class="total" style="color: black;">Total Boletos: <?php echo $total_boletos_; ?></div><!-- Adicionando a contagem de boletos -->
                 <div class="total" style="color: blue;">Total Entradas: R$ <?php echo number_format($tot_entrada, 2, ',', '.'); ?></div>
                 <div class="total" style="color: red;">Total Saídas: R$ <?php echo number_format($tot_saida, 2, ',', '.'); ?></div>
-                <div class="total" style="color: green;">Saldo: R$ <?php echo number_format($saldo, 2, ',', '.'); ?></div>
+                <div class="total" style="color: green;">Saldo: R$ <?php echo number_format($saldo, 2, ',', '.'); ?></div>				
             </div>
+
+
 
             <?php if ($result && mysqli_num_rows($result) > 0) : ?>
                 <table>
@@ -276,7 +290,7 @@ if (isset($_SESSION['MM_Usuario'])) {
                             </td>
 
                                 <!--Exibe Login -->
-                                <td style="color: red; font-weight: bold;"><?php echo $login; ?></td> <!-- Login -->
+                                <td style="color:#0d6cea; font-weight: bold;"><?php echo $login; ?></td> <!-- Login -->
 
                                 <!--Exibe Data --> 
                                 <td style="font-weight: bold;"><?php echo date('d-m-Y H:i:s', strtotime($row['data'])); ?></td> <!-- Data -->
