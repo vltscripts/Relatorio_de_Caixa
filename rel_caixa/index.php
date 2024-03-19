@@ -36,114 +36,111 @@ if (isset($_SESSION['MM_Usuario'])) {
     <link href="../../estilos/bi-icons.css" rel="stylesheet" type="text/css" />
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="css/css.css" rel="stylesheet" type="text/css" />
-    <style>
-        /* Estilos CSS personalizados */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ffffff;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
+<style>
+    /* Estilos CSS personalizados */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
 
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 20px auto;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
+    .container {
+        width: 100%;
+        max-width: 1600px; /* Aumentando a largura máxima */
+        margin: 20px auto;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
 
-        form {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+    form {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
 
-        form label {
-            font-weight: bold;
-            margin-right: 10px;
-        }
+    form label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
 
-        .search-group {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+    .search-group {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+    }
 
-        input[type="text"],
-        input[type="date"],
-        input[type="submit"],
-        .clear-button {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
+    input[type="text"],
+    input[type="date"],
+    input[type="submit"],
+    .clear-button {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
 
-        input[type="submit"],
-        .clear-button {
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover,
-        .clear-button:hover {
-            background-color: #0056b3;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th,
-        td {
-            padding: 5px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            font-size: 13px;
-        }
-
-        th {
-            background-color: #007bff;
-            color: #fff;
-        }
-
-        .no-data {
-            text-align: center;
-            color: #777;
-            padding: 20px;
-        }
-
-        .total-section {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #e4e4e4;
-            color: #fff;
-        }
-
-        .total-section .total {
-            font-weight: bold;
-        }
-
-        .hidden {
-            display: none;
-        }
-       th {
+    input[type="submit"],
+    .clear-button {
         background-color: #007bff;
-        color: white; /* Define a cor do texto para branco */
-       }
-    </style>
+        color: #fff;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover,
+    .clear-button:hover {
+        background-color: #0056b3;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th,
+    td {
+        padding: 10px; /* Aumentando o padding para melhor legibilidade */
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        font-size: 14px;
+    }
+
+    th {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .no-data {
+        text-align: center;
+        color: #777;
+        padding: 20px;
+    }
+
+    .total-section {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #e4e4e4;
+        color: #fff;
+    }
+
+    .total-section .total {
+        font-weight: bold;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+
 
 </head>
 
@@ -250,29 +247,34 @@ if (isset($_SESSION['MM_Usuario'])) {
                             <tr class="<?php echo $nomeClienteClass . ' ' . $tarifaRowClass; ?>">
 							
                                 <!--Exibe Nome do Cliente	 -->
-                                <td style="text-align: left; cursor: default;">
-                                    <?php
-                                    // Encontrar o ID no histórico usando expressão regular
-                                    preg_match('/titulo (\d+)/', $row['historico'], $matches);
-                                    $id = isset($matches[1]) ? $matches[1] : '--';
+                            <td style="text-align: left; cursor: default;">
+                                <?php
+                                // Encontrar o ID no histórico usando expressão regular
+                                preg_match('/titulo (\d+)/', $row['historico'], $matches);
+                                $id = isset($matches[1]) ? $matches[1] : '--';
 
-                                    // Consulta SQL para obter o login e uuid_cliente com base no ID
-                                    $cliente_query = "SELECT c.nome, l.login, c.uuid_cliente FROM sis_lanc l 
-                                                      JOIN sis_cliente c ON l.login = c.login
-                                                      WHERE l.id = '$id'";
-                                    $cliente_result = mysqli_query($link, $cliente_query);
-                                    $cliente_row = mysqli_fetch_assoc($cliente_result);
-                                    $nome_cliente = isset($cliente_row['nome']) ? $cliente_row['nome'] : '--';
-                                    $login = isset($cliente_row['login']) ? $cliente_row['login'] : '--';
-                                    $uuid_cliente = isset($cliente_row['uuid_cliente']) ? $cliente_row['uuid_cliente'] : '';
+                                // Consulta SQL para obter o login e uuid_cliente com base no ID
+                                $cliente_query = "SELECT c.nome, l.login, c.uuid_cliente FROM sis_lanc l 
+                                JOIN sis_cliente c ON l.login = c.login
+                                WHERE l.id = '$id'";
+                                $cliente_result = mysqli_query($link, $cliente_query);
+                                $cliente_row = mysqli_fetch_assoc($cliente_result);
+                                $nome_cliente = isset($cliente_row['nome']) ? $cliente_row['nome'] : '--';
+                                $login = isset($cliente_row['login']) ? $cliente_row['login'] : '--';
+                                $uuid_cliente = isset($cliente_row['uuid_cliente']) ? $cliente_row['uuid_cliente'] : '';
 
-                                    // Exibir o nome do cliente e link
-                                    echo '<a href="../../cliente_det.hhvm?uuid=' . $uuid_cliente . '" target="_blank" style="color: #06683e; display: flex; align-items: center;" title="' . $nome_cliente . '">';
-                                    echo '<img src="img/icon_cliente.png" alt="Ícone Digital" style="width: 20px; height: 20px; margin-right: 10px; float: left;">';
-                                    echo '<span style="color: #0d6cea; font-weight: bold;">' . $nome_cliente . '</span>';
-                                    echo '</a>';
-                                    ?>
-                                </td>
+                                // Limitar o tamanho do nome do cliente
+                                $max_length = 25; // Defina o comprimento máximo desejado
+                                $nome_cliente_truncado = strlen($nome_cliente) > $max_length ? substr($nome_cliente, 0, $max_length) . '...' : $nome_cliente;
+
+                                // Exibir o nome do cliente e link
+                                echo '<a href="../../cliente_det.hhvm?uuid=' . $uuid_cliente . '" target="_blank" style="color: #06683e; display: flex; align-items: center;" title="' . $nome_cliente . '">';
+                                echo '<img src="img/icon_cliente.png" alt="Ícone Digital" style="width: 20px; height: 20px; margin-right: 10px; float: left;">';
+                                echo '<span style="color: #0d6cea; font-weight: bold;">' . $nome_cliente_truncado . '</span>';
+                                echo '</a>';
+                                ?>
+                            </td>
+
 
                                 <!--Exibe Login -->
                                 <td style="color: red; font-weight: bold;"><?php echo $login; ?></td> <!-- Login -->
