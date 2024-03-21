@@ -5,7 +5,7 @@ include('addons.class.php');
 // VERIFICA SE O USUARIO ESTA LOGADO --------------------------------------------------------------
 session_name('mka');
 if (!isset($_SESSION)) session_start();
-if (!isset($_SESSION['MKA_Logado'])) exit('Acesso negado... <a href="/admin/">Fazer Login</a>');
+if (!isset($_SESSION['mka_logado']) && !isset($_SESSION['MKA_Logado'])) exit('Acesso negado... <a href="/admin/login.php">Fazer Login</a>');
 // VERIFICA SE O USUARIO ESTA LOGADO --------------------------------------------------------------
 
 // Assuming $Manifest is defined somewhere before this code
@@ -14,28 +14,19 @@ $manifestVersion = $Manifest->{'version'} ?? '';
 ?>
 
 <!DOCTYPE html>
-<?php
-if (isset($_SESSION['MM_Usuario'])) {
-    echo '<html lang="pt-BR">';
-} else {
-    echo '<html lang="pt-BR" class="has-navbar-fixed-top">';
-}
-?>
-<html lang="pt-BR">
-
+<html lang="pt-BR" class="has-navbar-fixed-top">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8">
-    <title>MK - AUTH :: <?php echo $manifestTitle . " - V " . $manifestVersion; ?></title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="iso-8859-1">
+<title>MK-AUTH :: <?php echo $Manifest->{'name'}; ?></title>
 
-    <link href="../../estilos/mk-auth.css" rel="stylesheet" type="text/css" />
-    <link href="../../estilos/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="../../estilos/mk-auth.css" rel="stylesheet" type="text/css" />
+<link href="../../estilos/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="../../estilos/bi-icons.css" rel="stylesheet" type="text/css" />
 
-    <script src="../../scripts/jquery.js"></script>
-    <script src="../../scripts/mk-auth.js"></script>
-    <link href="../../estilos/bi-icons.css" rel="stylesheet" type="text/css" />
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="css/css.css" rel="stylesheet" type="text/css" />
+<script src="../../scripts/jquery.js"></script>
+<script src="../../scripts/mk-auth.js"></script>
+
 <style>
     /* Estilos CSS personalizados */
     body {
@@ -143,6 +134,35 @@ if (isset($_SESSION['MM_Usuario'])) {
 
 
 </head>
+    <script>
+        function clearSearch() {
+            document.getElementById('search').value = '';
+            document.getElementById('data_inicial').value = '<?php echo date('Y-m-d'); ?>';
+            document.getElementById('data_final').value = '<?php echo date('Y-m-d'); ?>';
+            document.getElementById('searchForm').submit();
+        }
+
+// Esconde os elementos tarifa-row quando a página é carregada
+window.onload = function() {
+    toggleTarifaRows();
+};
+
+function toggleTarifaRows() {
+    var tarifaRows = document.querySelectorAll('tr.tarifa-row');
+    var toggleButton = document.getElementById('toggleButton');
+
+    tarifaRows.forEach(function(row) {
+        row.classList.toggle('hidden');
+    });
+
+    if (toggleButton.innerText === 'Mostrar') {
+        toggleButton.innerText = 'Ocultar';
+    } else {
+        toggleButton.innerText = 'Mostrar';
+    }
+}
+
+    </script>
 
 <body>
     <?php include('../../topo.php'); ?>
@@ -169,7 +189,8 @@ if (isset($_SESSION['MM_Usuario'])) {
                 <input type="date" id="data_final" name="data_final" value="<?php echo isset($_GET['data_final']) ? htmlspecialchars($_GET['data_final']) : date('Y-m-d'); ?>">
                 <input type="submit" value="Buscar">
                 <button type="button" onclick="clearSearch()" class="clear-button">Limpar</button>
-                <button type="button" onclick="toggleTarifaRows()" class="clear-button sort-button-1">Ocultar</button>
+                <button type="button" onclick="var tarifaRows = document.querySelectorAll('tr.tarifa-row'); tarifaRows.forEach(function(row) { row.classList.toggle('hidden'); }); if (this.innerText === 'Ocultar') { this.innerText = 'Mostrar'; } else { this.innerText = 'Ocultar'; }" class="clear-button sort-button-1">Mostrar</button>
+
             </form>
 
             <?php
@@ -346,36 +367,6 @@ if (isset($_SESSION['MM_Usuario'])) {
 
     <script src="../../menu.js.php"></script>
     <?php include('../../rodape.php'); ?>
-
-    <script>
-        function clearSearch() {
-            document.getElementById('search').value = '';
-            document.getElementById('data_inicial').value = '<?php echo date('Y-m-d'); ?>';
-            document.getElementById('data_final').value = '<?php echo date('Y-m-d'); ?>';
-            document.getElementById('searchForm').submit();
-        }
-
-// Esconde os elementos tarifa-row quando a página é carregada
-window.onload = function() {
-    toggleTarifaRows();
-};
-
-function toggleTarifaRows() {
-    var tarifaRows = document.querySelectorAll('tr.tarifa-row');
-    var toggleButton = document.getElementById('toggleButton');
-
-    tarifaRows.forEach(function(row) {
-        row.classList.toggle('hidden');
-    });
-
-    if (toggleButton.innerText === 'Mostrar') {
-        toggleButton.innerText = 'Ocultar';
-    } else {
-        toggleButton.innerText = 'Mostrar';
-    }
-}
-
-    </script>
 
 </body>
 
