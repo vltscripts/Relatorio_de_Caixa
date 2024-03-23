@@ -182,7 +182,7 @@ function toggleTarifaRows() {
         <?php if ($acesso_permitido) : ?>
             <form id="searchForm" method="GET">
                 <label for="search">Buscar Cliente:</label>
-                <input type="text" id="search" name="search" placeholder="Digite o Nome do Cliente, ID ou Usuário" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                <input type="text" id="search" name="search" placeholder="Digite o Login do Cliente" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                 <label for="data_inicial">Data Inicial:</label>
                 <input type="date" id="data_inicial" name="data_inicial" value="<?php echo isset($_GET['data_inicial']) ? htmlspecialchars($_GET['data_inicial']) : date('Y-m-d'); ?>">
                 <label for="data_final">Data Final:</label>
@@ -214,10 +214,12 @@ function toggleTarifaRows() {
 
             // Se um termo de pesquisa foi fornecido, adicione condições à consulta SQL
             if (isset($_GET['search'])) {
-                $search_term = mysqli_real_escape_string($link, trim($_GET['search'])); // Remover espaços em branco no início e no final
-                $query .= " AND (c.historico LIKE '%$search_term%' OR c.usuario LIKE '%$search_term%' 
-                           OR EXISTS (SELECT 1 FROM sis_lanc sl JOIN sis_cliente sc ON sl.login = sc.login 
-                                       WHERE c.historico LIKE CONCAT('%', sl.id, '%') AND sc.nome LIKE '%$search_term%'))";
+            $search_term = mysqli_real_escape_string($link, trim($_GET['search'])); // Remover espaços em branco no início e no final
+            $query .= " AND (c.historico LIKE '%$search_term%' OR c.usuario LIKE '%$search_term%' 
+            OR EXISTS (SELECT 1 FROM sis_lanc sl 
+                           WHERE c.historico REGEXP 'titulo ([0-9]+)' AND 
+                                 CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(c.historico, 'titulo ', -1), ' ', 1) AS UNSIGNED) = sl.id AND 
+                                 sl.login LIKE '%$search_term%'))";
             }
 
             // Adicionando a cláusula ORDER BY para ordenar por data mais recente
@@ -308,10 +310,12 @@ function toggleTarifaRows() {
                                 echo '<span style="color: #0d6cea; font-weight: bold;">' . $nome_cliente_truncado . '</span>';
                                 echo '</a>';
                                 ?>
-                            </td>
+                                </td>
 
                                 <!--Exibe Login -->
-                                <td style="color:#0d6cea; font-weight: bold;"><?php echo $login; ?></td> <!-- Login -->
+                                <td style="color:#0d6cea; font-weight: bold;">
+                                <a href="?search=<?php echo urlencode($login); ?>&data_inicial=<?php echo urlencode($_GET['data_inicial']); ?>&data_final=<?php echo urlencode($_GET['data_final']); ?>" style="text-decoration: none; color: inherit;"><?php echo $login; ?></a>
+                                </td>
 
                                 <!--Exibe Data --> 
                                 <td style="font-weight: bold;"><?php echo date('d-m-Y H:i:s', strtotime($row['data'])); ?></td> <!-- Data -->
