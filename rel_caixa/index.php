@@ -314,7 +314,17 @@ function toggleTarifaRows() {
 
                                 <!--Exibe Login -->
                                 <td style="color:#0d6cea; font-weight: bold;">
-                                <a href="?search=<?php echo urlencode($login); ?>&data_inicial=<?php echo urlencode($_GET['data_inicial']); ?>&data_final=<?php echo urlencode($_GET['data_final']); ?>" style="text-decoration: none; color: inherit;"><?php echo $login; ?></a>
+                                    <?php
+                                    // Verificar se $_GET['data_inicial'] está definido e não está vazio
+                                    $data_inicial = (!empty($_GET['data_inicial'])) ? date('Y-m-d', strtotime($_GET['data_inicial'])) : date('Y-m-d');
+    
+                                    // Verificar se $_GET['data_final'] está definido e não está vazio
+                                    $data_final = (!empty($_GET['data_final'])) ? date('Y-m-d', strtotime($_GET['data_final'])) : date('Y-m-d');
+    
+                                    // Construir o link de busca com as datas formatadas
+                                    $link_busca = "?search=" . urlencode($login) . "&data_inicial=" . urlencode($data_inicial) . "&data_final=" . urlencode($data_final);
+                                    ?>
+                                    <a href="<?php echo $link_busca; ?>" style="text-decoration: none; color: inherit;"><?php echo $login; ?></a>
                                 </td>
 
                                 <!--Exibe Data --> 
