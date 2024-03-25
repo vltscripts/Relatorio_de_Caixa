@@ -368,16 +368,20 @@ function toggleTarifaRows() {
 								
 								<!-- Exibe Boleto Pago -->
                                 <td style="font-weight: bold;">
-                                    <?php
-                                    // Consulta SQL para obter a data de vencimento do boleto da tabela sis_lanc
-                                    $id = isset($matches[1]) ? $matches[1] : '';
-                                    $boleto_query = "SELECT datavenc FROM sis_lanc WHERE id = '$id'";
-                                    $boleto_result = mysqli_query($link, $boleto_query);
-                                    $datavenc = mysqli_fetch_assoc($boleto_result)['datavenc'];
-
-                                    // Exibir a data de vencimento do boleto
-                                    echo date('d-m-Y', strtotime($datavenc)); // Ajuste o formato da data conforme necessário
-                                    ?>
+                                <?php
+                                // Consulta SQL para obter a data de vencimento do boleto da tabela sis_lanc
+                                $id = isset($matches[1]) ? $matches[1] : '';
+                                $boleto_query = "SELECT datavenc FROM sis_lanc WHERE id = '$id'";
+                                $boleto_result = mysqli_query($link, $boleto_query);
+                                $datavenc = mysqli_fetch_assoc($boleto_result)['datavenc'];
+                                // Verifica se a data de vencimento é válida
+                                if ($datavenc && $datavenc != '0000-00-00') {
+                                // Exibir a data de vencimento do boleto
+                                echo date('d-m-Y', strtotime($datavenc)); // Ajuste o formato da data conforme necessário
+                                } else {
+                                echo '<span style="color: #0d6cea;">--</span>'; // Se não for válida, exibe "--" em azul
+                                }
+                                ?>
                                 </td>
 
                             </tr>
