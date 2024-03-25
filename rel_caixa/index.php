@@ -270,6 +270,8 @@ function toggleTarifaRows() {
                             <th style="color: white;">Entrada</th>
                             <th style="color: white;">Saída</th>
                             <th style="color: white;">ID</th>
+							<th style="color: white;">Boleto Pago</th> <!-- Nova coluna -->
+
                         </tr>
                     </thead>
                     <tbody>
@@ -363,6 +365,21 @@ function toggleTarifaRows() {
                                     <img src="img/digital.png" alt="Ícone Digital" style="width: 20px; height: 20px; margin-right: 5px; float: left;">
                                     <?php echo $id; ?>
                                 </td>
+								
+								<!-- Exibe Boleto Pago -->
+                                <td style="font-weight: bold;">
+                                    <?php
+                                    // Consulta SQL para obter a data de vencimento do boleto da tabela sis_lanc
+                                    $id = isset($matches[1]) ? $matches[1] : '';
+                                    $boleto_query = "SELECT datavenc FROM sis_lanc WHERE id = '$id'";
+                                    $boleto_result = mysqli_query($link, $boleto_query);
+                                    $datavenc = mysqli_fetch_assoc($boleto_result)['datavenc'];
+
+                                    // Exibir a data de vencimento do boleto
+                                    echo date('d-m-Y', strtotime($datavenc)); // Ajuste o formato da data conforme necessário
+                                    ?>
+                                </td>
+
                             </tr>
                             <?php $rowNumber++; ?>
                         <?php endwhile; ?>
