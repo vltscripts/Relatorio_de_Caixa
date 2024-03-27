@@ -96,7 +96,7 @@ $manifestVersion = $Manifest->{'version'} ?? '';
 
     th,
     td {
-        padding: 10px; /* Aumentando o padding para melhor legibilidade */
+        padding: 9px; /* Aumentando o padding para melhor legibilidade */
         text-align: left;
         border-bottom: 1px solid #ddd;
         font-size: 14px;
@@ -303,7 +303,7 @@ function toggleTarifaRows() {
                                 $uuid_cliente = isset($cliente_row['uuid_cliente']) ? $cliente_row['uuid_cliente'] : '';
 
                                 // Limitar o tamanho do nome do cliente
-                                $max_length = 25; // Defina o comprimento máximo desejado
+                                $max_length = 20; // Defina o comprimento máximo desejado
                                 $nome_cliente_truncado = strlen($nome_cliente) > $max_length ? substr($nome_cliente, 0, $max_length) . '...' : $nome_cliente;
 
                                 // Exibir o nome do cliente e link
@@ -314,19 +314,25 @@ function toggleTarifaRows() {
                                 ?>
                                 </td>
 
-                                <!--Exibe Login -->
+                                <!-- Exibir LOGIN-->
                                 <td style="color:#0d6cea; font-weight: bold;">
-                                    <?php
-                                    // Verificar se $_GET['data_inicial'] está definido e não está vazio
-                                    $data_inicial = (!empty($_GET['data_inicial'])) ? date('Y-m-d', strtotime($_GET['data_inicial'])) : date('Y-m-d');
-    
-                                    // Verificar se $_GET['data_final'] está definido e não está vazio
-                                    $data_final = (!empty($_GET['data_final'])) ? date('Y-m-d', strtotime($_GET['data_final'])) : date('Y-m-d');
-    
-                                    // Construir o link de busca com as datas formatadas
-                                    $link_busca = "?search=" . urlencode($login) . "&data_inicial=" . urlencode($data_inicial) . "&data_final=" . urlencode($data_final);
-                                    ?>
-                                    <a href="<?php echo $link_busca; ?>" style="text-decoration: none; color: inherit;"><?php echo $login; ?></a>
+                                   <?php
+                                   // Verificar se $_GET['data_inicial'] está definido e não está vazio
+                                   $data_inicial = (!empty($_GET['data_inicial'])) ? date('Y-m-d', strtotime($_GET['data_inicial'])) : date('Y-m-d');
+
+                                   // Verificar se $_GET['data_final'] está definido e não está vazio
+                                   $data_final = (!empty($_GET['data_final'])) ? date('Y-m-d', strtotime($_GET['data_final'])) : date('Y-m-d');
+
+                                   // Construir o link de busca com as datas formatadas
+                                   $link_busca = "?search=" . urlencode($login) . "&data_inicial=" . urlencode($data_inicial) . "&data_final=" . urlencode($data_final);
+
+                                   // Definir o comprimento máximo desejado para o nome de login
+                                   $max_length = 15;
+
+                                   // Limitar o tamanho do nome de login, se necessário
+                                   $login_truncado = (strlen($login) > $max_length) ? substr($login, 0, $max_length) . '...' : $login;
+                                   ?>
+                                   <a href="<?php echo $link_busca; ?>" title="<?php echo htmlspecialchars($login); ?>" style="text-decoration: none; color: inherit;"><?php echo $login_truncado; ?></a>
                                 </td>
 
                                 <!--Exibe Data --> 
@@ -338,7 +344,7 @@ function toggleTarifaRows() {
                                 <!-- Exibe Historico -->
                                 <td style="position: relative; cursor: pointer;">
                                 <?php
-                                $max_length = 45; // Defina o comprimento máximo desejado
+                                $max_length = 32; // Defina o comprimento máximo desejado
                                 $historico = $row['historico'];
                                 // Limita o tamanho do histórico e adiciona "..." se for muito longo
                                 $historico_abreviado = strlen($historico) > $max_length ? substr($historico, 0, $max_length) . '...' : $historico;
